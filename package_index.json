@@ -1,0 +1,29 @@
+{
+  "packages": [
+    {
+      "name": "Arc32",
+      "maintainer": "Nishil Patel",
+      "websiteURL": "https://github.com/YOUR_USERNAME/arc32-sdk",
+      "email": "nishil.k.patel@gmail.com",
+      "help": {
+        "online": "https://github.com/YOUR_USERNAME/arc32-sdk"
+      },
+      "platforms": [
+        {
+          "name": "Arc32 RISC-V Boards",
+          "architecture": "riscv",
+          "version": "1.0.0",
+          "category": "Contributed",
+          "url": "https://github.com/YOUR_USERNAME/arc32-sdk/archive/refs/heads/main.zip",
+          "archiveFileName": "main.zip",
+          "checksum": "SHA-256:PLACEHOLDER",
+          "size": "PLACEHOLDER",
+          "boards": [
+            { "name": "Arc32 (THEJAS32 RISC-V)" }
+          ],
+          "toolsDependencies": []
+        }
+      ]
+    }
+  ]
+}
