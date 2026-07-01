@@ -3,10 +3,10 @@
     {
       "name": "Arc32",
       "maintainer": "Nishil Patel",
-      "websiteURL": "https://github.com/YOUR_USERNAME/arc32-sdk",
+      "websiteURL": "https://github.com/nishil-26/arc32-sdk.git",
       "email": "nishil.k.patel@gmail.com",
       "help": {
-        "online": "https://github.com/YOUR_USERNAME/arc32-sdk"
+        "online": "https://github.com/nishil-26/arc32-sdk.git"
       },
       "platforms": [
         {
@@ -14,7 +14,7 @@
           "architecture": "riscv",
           "version": "1.0.0",
           "category": "Contributed",
-          "url": "https://github.com/YOUR_USERNAME/arc32-sdk/archive/refs/heads/main.zip",
+          "url": "https://github.com/nishil=26/arc32-sdk/archive/refs/heads/main.zip",
           "archiveFileName": "main.zip",
           "checksum": "SHA-256:PLACEHOLDER",
           "size": "PLACEHOLDER",
