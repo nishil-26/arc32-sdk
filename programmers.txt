@@ -1,0 +1,15 @@
+################################################################
+# Arc32 Programmer / Upload Tool Definitions
+################################################################
+
+arc32_upload.name=Arc32 XMODEM Uploader
+
+# Default: UART/XMODEM upload (BOOT_SEL = HIGH, default boot mode)
+tools.arc32_upload.upload.protocol=xmodem
+tools.arc32_upload.upload.params.verbose=-v
+tools.arc32_upload.upload.params.quiet=
+tools.arc32_upload.upload.pattern="{runtime.tools.python3.path}/python3" "{runtime.platform.path}/tools/arc32_upload.py" --port {serial.port} --baud {upload.speed} --file "{build.path}/{build.project_name}.bin" --reset-pin auto
+
+# Alternative: SPI Flash upload (BOOT_SEL = LOW, standalone mode)
+tools.arc32_flash_upload.upload.protocol=spiflash
+tools.arc32_flash_upload.upload.pattern="{runtime.tools.python3.path}/python3" "{runtime.platform.path}/tools/arc32_upload.py" --port {serial.port} --baud {upload.speed} --file "{build.path}/{build.project_name}.bin" --mode spiflash

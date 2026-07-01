@@ -1,0 +1,43 @@
+################################################################
+# Arc32 Board Definition for Arduino IDE
+# Place this package under:
+#   ~/Arduino15/packages/Arc32/hardware/riscv/1.0.0/boards.txt
+################################################################
+
+menu.upload_mode=Upload Mode
+
+##############################################################
+
+arc32.name=Arc32 (THEJAS32 RISC-V)
+
+arc32.upload.tool=arc32_upload
+arc32.upload.protocol=xmodem
+arc32.upload.maximum_size=262144
+arc32.upload.maximum_data_size=262144
+arc32.upload.speed=115200
+arc32.upload.wait_for_upload_port=true
+
+arc32.build.core=arc32
+arc32.build.variant=arc32
+arc32.build.mcu=rv32im
+arc32.build.f_cpu=100000000L
+arc32.build.board=ARC32
+arc32.build.arch=RISCV
+arc32.build.extra_flags=-march=rv32im_zicsr -mabi=ilp32
+arc32.build.ldscript=arc32.ld
+
+arc32.bootloader.tool=arc32_bootloader
+arc32.bootloader.file=none
+
+# ---- Upload mode submenu ----
+arc32.menu.upload_mode.uart=Serial / UART (Default)
+arc32.menu.upload_mode.uart.upload.protocol=xmodem
+arc32.menu.upload_mode.uart.build.extra_flags=-march=rv32im_zicsr -mabi=ilp32 -DBOOT_MODE_UART
+
+arc32.menu.upload_mode.spiflash=SPI Flash (Standalone)
+arc32.menu.upload_mode.spiflash.upload.protocol=spiflash
+arc32.menu.upload_mode.spiflash.build.extra_flags=-march=rv32im_zicsr -mabi=ilp32 -DBOOT_MODE_SPIFLASH
+
+# ---- CPU Frequency submenu (fixed, no PLL on THEJAS32) ----
+arc32.menu.upload_mode.uart.build.f_cpu=100000000L
+arc32.menu.upload_mode.spiflash.build.f_cpu=100000000L
