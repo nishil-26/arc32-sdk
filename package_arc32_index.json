@@ -16,8 +16,8 @@
           "category": "Contributed",
           "url": "https://github.com/nishil-26/arc32-sdk/releases/download/1.0.0/arc32-1.0.0.zip",
           "archiveFileName": "arc32-1.0.0.zip",
-          "checksum": "SHA-256:31525be91d239ca762dc900f0221269d5a4a5884f1773059679404bbf70690dc",
-          "size": "52478",
+          "checksum": "SHA-256:4ee2ed08bcd36cf7113e5b8e0b341c7b2f9bd6e7ba65a7aa69b732412cd37c4e",
+          "size": "48362",
           "boards": [
             {
               "name": "Arc32 (THEJAS32 RISC-V)"
