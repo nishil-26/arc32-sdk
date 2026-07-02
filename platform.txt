@@ -1,89 +1,54 @@
 ################################################################
 # Arc32 Platform Definition for Arduino IDE
-# Defines the RISC-V GCC toolchain build recipes.
-#
-# PREREQUISITE (install once on the host machine):
-#   sudo apt-get install gcc-riscv64-unknown-elf picolibc-riscv64-unknown-elf
-#
-# These provide riscv64-unknown-elf-gcc/g++ (supports -march=rv32im_zicsr
-# -mabi=ilp32 multilib) and picolibc (the embedded C library — THEJAS32
-# has no OS, so a normal glibc/newlib cannot be used).
-#
-# NOTE: This toolchain ships NO libstdc++ for bare-metal RISC-V, so the
-# core links with -nostdlib++ and supplies its own minimal operator
-# new/delete etc. in cores/arc32/cxx_support.cpp. Exceptions and RTTI
-# are disabled (-fno-exceptions -fno-rtti) to match.
+# Portable Version for Boards Manager
 ################################################################
 
 name=Arc32 RISC-V Boards
 version=1.0.0
 
 # ---- Toolchain ----
-compiler.path=
-compiler.prefix=riscv64-unknown-elf-
-compiler.picolibc.path=/usr/lib/picolibc/riscv64-unknown-elf
+# This path is dynamically injected by the Arduino Boards Manager
+compiler.path={runtime.tools.xpack-riscv-none-elf-gcc.path}/bin/
+compiler.prefix=riscv-none-elf-
 
+# ---- Compiler Flags ----
 compiler.warning_flags=-w
-compiler.warning_flags.none=-w
-compiler.warning_flags.default=
-compiler.warning_flags.more=-Wall
-compiler.warning_flags.all=-Wall -Wextra
-
 compiler.c.cmd={compiler.prefix}gcc
-compiler.c.flags=-c -g -Os {build.extra_flags} -ffunction-sections -fdata-sections -MMD -std=gnu11 --specs={compiler.picolibc.path}/picolibc.specs -I{compiler.picolibc.path}/include
+compiler.c.flags=-c -g -Os {build.extra_flags} -ffunction-sections -fdata-sections -specs=nano.specs -MMD -std=gnu11 -I"{build.core.path}" -I"{build.variant.path}"
 
 compiler.c.elf.cmd={compiler.prefix}g++
-compiler.c.elf.flags=-Os -Wl,--gc-sections -T{build.ldscript} -nostartfiles -nostdlib++ --specs={compiler.picolibc.path}/picolibcpp.specs -L{compiler.picolibc.path}/lib/rv32im -Wl,-Map,{build.path}/{build.project_name}.map
+# Using {build.core.path} which Arduino dynamically resolves during compilation
+compiler.c.elf.flags=-Os -Wl,--gc-sections -T{build.core.path}/arc32.ld -nostartfiles -nostdlib++ --specs=nano.specs -Wl,-Map,{build.path}/{build.project_name}.map
 
 compiler.cpp.cmd={compiler.prefix}g++
-compiler.cpp.flags=-c -g -Os {build.extra_flags} -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -MMD -std=gnu++11 --specs={compiler.picolibc.path}/picolibcpp.specs -I{compiler.picolibc.path}/include
+compiler.cpp.flags=-c -g -Os {build.extra_flags} -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -specs=nano.specs -MMD -std=gnu++11 -I"{build.core.path}" -I"{build.variant.path}"
 
 compiler.S.cmd={compiler.prefix}gcc
-compiler.S.flags=-c -g -x assembler-with-cpp {build.extra_flags} -MMD --specs={compiler.picolibc.path}/picolibc.specs -I{compiler.picolibc.path}/include
+compiler.S.flags=-c -g -x assembler-with-cpp {build.extra_flags} -MMD -specs=nano.specs -I"{build.core.path}" -I"{build.variant.path}"
 
 compiler.ar.cmd={compiler.prefix}ar
 compiler.ar.flags=rcs
-
 compiler.objcopy.cmd={compiler.prefix}objcopy
 compiler.objcopy.bin.flags=-O binary
 compiler.objcopy.hex.flags=-O ihex
-
 compiler.size.cmd={compiler.prefix}size
 
-compiler.libraries.ldflags=
+# ---- Build Patterns ----
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} -DARC32 -DF_CPU={build.f_cpu} -DARDUINO=10819 -DARDUINO_ARC32 {includes} "{source_file}" -o "{object_file}"
 
-# ---- Include paths ----
-compiler.c.extra_flags=
-compiler.cpp.extra_flags=
-compiler.S.extra_flags=
-compiler.libraries.ldflags=
-compiler.elf.extra_flags=
+recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} -DARC32 -DF_CPU={build.f_cpu} -DARDUINO=10819 -DARDUINO_ARC32 {includes} "{source_file}" -o "{object_file}"
 
-# ---- Build patterns ----
-recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} {compiler.warning_flags} -DARC32 -DF_CPU={build.f_cpu} -DARDUINO=10819 -DARDUINO_ARC32 -I"{build.core.path}" -I"{build.variant.path}" {compiler.c.extra_flags} {includes} "{source_file}" -o "{object_file}"
-
-recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} {compiler.warning_flags} -DARC32 -DF_CPU={build.f_cpu} -DARDUINO=10819 -DARDUINO_ARC32 -I"{build.core.path}" -I"{build.variant.path}" {compiler.cpp.extra_flags} {includes} "{source_file}" -o "{object_file}"
-
-recipe.S.o.pattern="{compiler.path}{compiler.S.cmd}" {compiler.S.flags} -DARC32 -DF_CPU={build.f_cpu} -I"{build.core.path}" -I"{build.variant.path}" {compiler.S.extra_flags} {includes} "{source_file}" -o "{object_file}"
+recipe.S.o.pattern="{compiler.path}{compiler.S.cmd}" {compiler.S.flags} -DARC32 -DF_CPU={build.f_cpu} {includes} "{source_file}" -o "{object_file}"
 
 recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} "{archive_file_path}" "{object_file}"
 
 recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.flags} -o "{build.path}/{build.project_name}.elf" {object_files} "{archive_file_path}" -lm -lgcc
 
-# ---- Output: convert ELF to raw binary (used by XMODEM uploader) ----
 recipe.objcopy.bin.pattern="{compiler.path}{compiler.objcopy.cmd}" {compiler.objcopy.bin.flags} "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
 
 recipe.objcopy.hex.pattern="{compiler.path}{compiler.objcopy.cmd}" {compiler.objcopy.hex.flags} "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.hex"
 
+# ---- Size Calculation ----
 recipe.size.pattern="{compiler.path}{compiler.size.cmd}" -A "{build.path}/{build.project_name}.elf"
-recipe.size.regex=^\.text\s+([0-9]+).*
-recipe.size.regex.data=^\.(data|bss)\s+([0-9]+).*
-
-# ---- Preprocessor (for IDE "Show Sketch Folder" / library detection) ----
-preproc.includes.flags=-w -x c++ -M -MG -MP
-recipe.preproc.includes="{compiler.path}{compiler.cpp.cmd}" {preproc.includes.flags} -DARC32 -DF_CPU={build.f_cpu} -DARDUINO=10819 -I"{build.core.path}" -I"{build.variant.path}" {includes} "{source_file}"
-
-preproc.macros.flags=-w -x c++ -E -CC
-recipe.preproc.macros="{compiler.path}{compiler.cpp.cmd}" {preproc.macros.flags} -DARC32 -DF_CPU={build.f_cpu} -DARDUINO=10819 -I"{build.core.path}" -I"{build.variant.path}" {includes} "{source_file}" -o "{preprocessed_file_path}"
-
-# ---- Upload recipe is defined per-tool in programmers.txt ----
+recipe.size.regex=^(?:\.text|\.data|\.rodata|\.sdata|\.eh_frame)\s+([0-9]+).*
+recipe.size.regex.data=^(?:\.data|\.bss|\.sbss|\.sdata|\.noinit)\s+([0-9]+).*
