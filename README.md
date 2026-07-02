@@ -3,6 +3,7 @@
 Full Arduino-IDE board package for the Arc32 board (THEJAS32 SoC, VEGA ET1031
 RISC-V RV32IM core, 100 MHz, 256 KB SRAM).
 
+
 ## 🚀 Installation via Boards Manager (Recommended)
 
 The easiest way to install the Arc32 SDK is through the Arduino IDE Boards Manager. This will automatically download the correct RISC-V GCC toolchain for your operating system (Windows, macOS, or Linux).
@@ -13,7 +14,16 @@ The easiest way to install the Arc32 SDK is through the Arduino IDE Boards Manag
    ```text
    https://raw.githubusercontent.com/nishil-26/arc32-sdk/main/package_arc32_index.json
    ```
-   
+
+
+## Upload mode
+
+- **Serial / UART (Default)**: JP1 jumper open. Default boot mode, used for
+  programming via XMODEM over the CP2102N USB port.
+- **SPI Flash (Standalone)**: JP1 jumper shorted. Board boots from the
+  W25Q16 flash chip on every power-up (no need to be connected to a PC).
+
+  
 ## Known limitations (v1.0)
 
 - No `<algorithm>`/STL — `libstdc++` has no bare-metal rv32im port in this
