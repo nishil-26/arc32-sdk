@@ -11,8 +11,9 @@ The easiest way to install the Arc32 SDK is through the Arduino IDE Boards Manag
 2. Go to **File** ➔ **Preferences** (on macOS: **Arduino** ➔ **Settings**).
 3. In the **"Additional Boards Manager URLs"** field, paste the following link:
    ```text
-   [https://raw.githubusercontent.com/nishil-26/arc32-sdk/main/package_arc32_index.json](https://raw.githubusercontent.com/nishil-26/arc32-sdk/main/package_arc32_index.json)
-
+   https://raw.githubusercontent.com/nishil-26/arc32-sdk/main/package_arc32_index.json
+   ```
+   
 ## Known limitations (v1.0)
 
 - No `<algorithm>`/STL — `libstdc++` has no bare-metal rv32im port in this
