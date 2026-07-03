@@ -3,7 +3,7 @@
  *
  * Maps Arduino logical pin numbers to THEJAS32 GPIO banks / PWM channels.
  *
- * Physical header layout (breadboard-friendly, ESP32-width):
+ * Physical header layout 
  *
  *   J2 LEFT HEADER          J3 RIGHT HEADER
  *   ─────────────           ───────────────
