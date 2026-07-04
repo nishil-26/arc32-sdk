@@ -5,21 +5,51 @@ This project encompasses both a high-performance physical development board desi
 Developed during an internship at **IIT Gandhinagar**, this project aims to make indigenous RISC-V silicon easily accessible to developers, students, and engineers worldwide.
 
 ---
+## 🛠️ Hardware Overview
 
-## 🛠️ The Hardware: Arc32 v1 NEO
+Arc32 v1 NEO is an open-source Arduino-compatible development board built around the indigenous **THEJAS32 SoC** (VEGA ET1031 RISC-V processor). The board combines native USB programming, onboard SPI Flash, integrated Wi-Fi/Bluetooth connectivity, and Arduino-style expansion headers into a compact development platform.
 
-### Core Specifications
-* **Core Processor:** THEJAS32 SoC (VEGA ET1031 RISC-V RV32IM core @ 100 MHz, 256 KB unified SRAM).
-* **Wireless Co-Processor:** Ai-Thinker RTL8720DN BW16 module, introducing dual-band Wi-Fi 4 and Bluetooth LE 5.0 capabilities.
-* **Power & Interface:** Robust USB Type-C interface, integrated CP2102N USB-to-UART bridge, dual AMS1117 regulation stages (3.3V and 1.2V), and a dedicated 500mA PTC polyfuse.
+### ✨ Key Features
 
+- **Processor:** THEJAS32 SoC (VEGA ET1031, 32-bit RISC-V RV32IM @ 100 MHz)
+- **Memory:** 256 KB embedded SRAM + 2 MB W25Q16JVSS SPI NOR Flash
+- **Wireless:** BW16 (RTL8720DN) module with Wi-Fi 4 and Bluetooth LE 5
+- **USB Interface:** USB Type-C with onboard CP2102N USB-to-UART bridge
+- **Power:** AMS1117-3.3V & AMS1117-1.2V regulators with 500 mA resettable polyfuse
+- **Connectivity:** 24 GPIOs, PWM, UART, SPI, and I²C interfaces exposed through Arduino-compatible headers
 
-### 📁 Hardware Source Files
-The board is 100% open-source hardware. All files are located in the [`hardware/arc32_v1_neo/`](hardware/arc32_v1_neo/) directory:
-* **[`source_kicad/`](hardware/arc32_v1_neo/source_kicad/)**: The raw, fully editable KiCad design files (`.kicad_sch`, `.kicad_pcb`).
-* **[`production_files/`](hardware/arc32_v1_neo/production_files/)**: Ready-to-order manufacturing assets, including the Gerber/Drill ZIP, a high-resolution PDF schematic, and the **Official Arc32 Datasheet**.
-* **[`renders/`](hardware/arc32_v1_neo/renders/)**: 3D layout visualizations of the physical board.
+## 📁 Hardware Resources
 
+The complete hardware design is fully open-source and available under the `hardware/` directory.
+
+```text
+hardware/
+└── arc32_v1_neo/
+    ├── source_kicad/
+    ├── production_files/
+    └── renders/
+```
+
+###  `source_kicad/`
+Contains the complete KiCad project for the board, including:
+- Schematic (`.kicad_sch`)
+- PCB Layout (`.kicad_pcb`)
+- Project files (`.kicad_pro`)
+
+These files can be edited directly using KiCad for customization or future revisions.
+
+###  `production_files/`
+Manufacturing-ready assets required for board fabrication and assembly:
+- Gerber & Drill package (`.zip`)
+- Bill of Materials (BOM)
+- High-resolution schematic (PDF)
+- Official Arc32 v1 NEO Datasheet
+
+###  `renders/`
+High-resolution 3D renders of the board, including:
+- Top View
+- Bottom View
+- Angled Perspective
 ---
 
 ## Full Arduino-IDE board package for the Arc32 board:
